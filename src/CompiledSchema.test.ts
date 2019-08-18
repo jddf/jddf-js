@@ -120,6 +120,7 @@ describe("CompiledSchema", () => {
     it("handles properties form", () => {
       expect(
         compileSchema({
+          additionalProperties: false,
           properties: {
             a: {},
           },
@@ -132,11 +133,33 @@ describe("CompiledSchema", () => {
         form: {
           form: "properties",
           hasProperties: true,
+          allowAdditional: false,
           required: {
             a: {
               form: { form: "empty" },
             },
           },
+          optional: {
+            b: {
+              form: { form: "empty" },
+            },
+          },
+        },
+      });
+
+      expect(
+        compileSchema({
+          optionalProperties: {
+            b: {},
+          },
+        }),
+      ).toEqual({
+        definitions: {},
+        form: {
+          form: "properties",
+          hasProperties: false,
+          allowAdditional: false,
+          required: {},
           optional: {
             b: {
               form: { form: "empty" },
@@ -193,6 +216,7 @@ describe("CompiledSchema", () => {
               form: {
                 form: "properties",
                 hasProperties: true,
+                allowAdditional: false,
                 required: {},
                 optional: {},
               },

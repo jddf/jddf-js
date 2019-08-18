@@ -2,7 +2,7 @@ import InvalidFormError from "./InvalidForm";
 import Schema from "./Schema";
 
 /**
- * CompiledSchema is a type-safe representation of valid JSL schemas.
+ * CompiledSchema is a type-safe representation of a valid JDDF schema.
  *
  * Whereas the `Schema` interface is useful if you merely need data to be
  * schema-like, if you want to ensure that a schema is semantically valid, and
@@ -73,6 +73,7 @@ export interface ElementsForm {
 export interface PropertiesForm {
   form: "properties";
   hasProperties: boolean;
+  allowAdditional: boolean;
   required: { [name: string]: CompiledSchema };
   optional: { [name: string]: CompiledSchema };
 }
@@ -142,6 +143,15 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
       throw new InvalidFormError();
     }
 
+    if (schema.enum.length === 0) {
+      throw new InvalidFormError();
+    }
+
+    // Check for duplicates.
+    if (new Set(schema.enum).size !== schema.enum.length) {
+      throw new InvalidFormError();
+    }
+
     form = { form: "enum", values: schema.enum };
   }
 
@@ -183,6 +193,7 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
     form = {
       form: "properties",
       hasProperties: schema.properties !== undefined,
+      allowAdditional: schema.additionalProperties === true,
       required,
       optional,
     };

@@ -7,11 +7,10 @@ export default class Vm {
   public static validate(
     maxErrors: number,
     maxDepth: number,
-    strictInstanceSemantics: boolean,
     schema: CompiledSchema,
     instance: any,
   ): ValidationError[] {
-    const vm = new Vm(maxErrors, maxDepth, strictInstanceSemantics, schema);
+    const vm = new Vm(maxErrors, maxDepth, schema);
 
     try {
       vm.eval(schema, instance);
@@ -28,21 +27,14 @@ export default class Vm {
 
   private maxErrors: number;
   private maxDepth: number;
-  private strictInstanceSemantics: boolean;
   private rootSchema: CompiledSchema;
   private instanceTokens: string[];
   private schemaTokens: string[][];
   private errors: ValidationError[];
 
-  constructor(
-    maxErrors: number,
-    maxDepth: number,
-    strictInstanceSemantics: boolean,
-    rootSchema: CompiledSchema,
-  ) {
+  constructor(maxErrors: number, maxDepth: number, rootSchema: CompiledSchema) {
     this.maxErrors = maxErrors;
     this.maxDepth = maxDepth;
-    this.strictInstanceSemantics = strictInstanceSemantics;
     this.rootSchema = rootSchema;
     this.instanceTokens = [];
     this.schemaTokens = [[]];
@@ -216,7 +208,7 @@ export default class Vm {
           }
           this.popSchemaToken();
 
-          if (this.strictInstanceSemantics) {
+          if (!schema.form.allowAdditional) {
             for (const name of Object.keys(instance)) {
               if (
                 name !== parentTag &&

@@ -5,7 +5,7 @@ You can use it to:
 
 1. Validate input data is valid against a schema,
 2. Get a list of validation errors with that input data, or
-3. Build your own custom tooling on top of JSON Schema Language.
+3. Build your own custom tooling on top of JSON Data Definition Format.
 
 This package is written in TypeScript, and works in browsers and Node.js alike.
 

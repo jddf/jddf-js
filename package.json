@@ -1,6 +1,6 @@
 {
   "name": "@jddf/jddf",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A JavaScript implementation of JSON Data Definition Format",
   "main": "lib/index.js",
   "repository": "https://github.com/jddf/jddf-js",

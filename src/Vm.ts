@@ -94,12 +94,6 @@ export default class Vm {
           case "uint32":
             this.checkInt(instance, 0, 4294967295);
             return;
-          case "int64":
-            this.checkInt(instance, -9223372036854775808, 9223372036854775807);
-            return;
-          case "uint64":
-            this.checkInt(instance, 0, 18446744073709551615);
-            return;
           case "string":
             if (typeof instance !== "string") {
               this.pushSchemaToken("type");

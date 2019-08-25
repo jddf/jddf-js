@@ -53,8 +53,6 @@ export interface TypeForm {
     | "uint16"
     | "int32"
     | "uint32"
-    | "int64"
-    | "uint64"
     | "string"
     | "timestamp";
 }
@@ -125,8 +123,6 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
       schema.type === "uint16" ||
       schema.type === "int32" ||
       schema.type === "uint32" ||
-      schema.type === "int64" ||
-      schema.type === "uint64" ||
       schema.type === "string" ||
       schema.type === "timestamp"
     ) {

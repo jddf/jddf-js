@@ -64,15 +64,6 @@ describe("CompiledSchema", () => {
 
       expect(
         compileSchema({
-          type: "number",
-        }),
-      ).toEqual({
-        definitions: {},
-        form: { form: "type", type: "number" },
-      });
-
-      expect(
-        compileSchema({
           type: "string",
         }),
       ).toEqual({

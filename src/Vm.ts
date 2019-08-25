@@ -67,7 +67,6 @@ export default class Vm {
             }
 
             return;
-          case "number":
           case "float32":
           case "float64":
             if (typeof instance !== "number") {

@@ -45,7 +45,6 @@ export interface TypeForm {
   form: "type";
   type:
     | "boolean"
-    | "number"
     | "float32"
     | "float64"
     | "int8"
@@ -118,7 +117,6 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
 
     if (
       schema.type === "boolean" ||
-      schema.type === "number" ||
       schema.type === "float32" ||
       schema.type === "float64" ||
       schema.type === "int8" ||

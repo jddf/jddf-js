@@ -1,5 +1,6 @@
 import InvalidFormError from "./InvalidForm";
 import Schema from "./Schema";
+import NonRootDefinitionError from "./NonRootDefinitionError";
 
 /**
  * CompiledSchema is a type-safe representation of a valid JDDF schema.
@@ -87,13 +88,13 @@ export interface DiscriminatorForm {
 }
 
 export function compileSchema(schema: Schema): CompiledSchema {
-  const compiled = compileSchemaInternal(schema);
+  const compiled = compileSchemaInternal(schema, true);
 
-  // Build up definitions manually here. This is only done for root schemas.
-  compiled.definitions = {};
-  for (const [name, subSchema] of Object.entries(schema.definitions || {})) {
-    compiled.definitions[name] = compileSchemaInternal(subSchema);
-  }
+  // // Build up definitions manually here. This is only done for root schemas.
+  // compiled.definitions = {};
+  // for (const [name, subSchema] of Object.entries(schema.definitions || {})) {
+  //   compiled.definitions[name] = compileSchemaInternal(subSchema);
+  // }
 
   // Ensure all references actually resolve. Throws if any references aren't ok.
   checkRefs(compiled, compiled);
@@ -101,7 +102,22 @@ export function compileSchema(schema: Schema): CompiledSchema {
   return compiled;
 }
 
-function compileSchemaInternal(schema: Schema): CompiledSchema {
+function compileSchemaInternal(
+  schema: Schema,
+  isRoot: boolean,
+): CompiledSchema {
+  let definitions: { [name: string]: CompiledSchema } | undefined;
+  if (isRoot) {
+    definitions = {};
+    for (const [name, subSchema] of Object.entries(schema.definitions || {})) {
+      definitions[name] = compileSchemaInternal(subSchema, false);
+    }
+  } else {
+    if (schema.definitions !== undefined) {
+      throw new NonRootDefinitionError();
+    }
+  }
+
   let form: Form = { form: "empty" };
 
   if (schema.ref !== undefined) {
@@ -156,7 +172,7 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
 
     form = {
       form: "elements",
-      schema: compileSchemaInternal(schema.elements),
+      schema: compileSchemaInternal(schema.elements, false),
     };
   }
 
@@ -170,7 +186,7 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
 
     const required: { [name: string]: CompiledSchema } = {};
     for (const [name, subSchema] of Object.entries(schema.properties || {})) {
-      required[name] = compileSchemaInternal(subSchema);
+      required[name] = compileSchemaInternal(subSchema, false);
     }
 
     const optional: { [name: string]: CompiledSchema } = {};
@@ -181,7 +197,7 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
         throw new InvalidFormError();
       }
 
-      optional[name] = compileSchemaInternal(subSchema);
+      optional[name] = compileSchemaInternal(subSchema, false);
     }
 
     form = {
@@ -200,7 +216,7 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
 
     form = {
       form: "values",
-      schema: compileSchemaInternal(schema.values),
+      schema: compileSchemaInternal(schema.values, false),
     };
   }
 
@@ -213,7 +229,7 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
     for (const [name, subSchema] of Object.entries(
       schema.discriminator.mapping,
     )) {
-      const compiled = compileSchemaInternal(subSchema);
+      const compiled = compileSchemaInternal(subSchema, false);
       if (compiled.form.form === "properties") {
         for (const property of Object.keys(compiled.form.required)) {
           if (property === schema.discriminator.tag) {
@@ -236,7 +252,7 @@ function compileSchemaInternal(schema: Schema): CompiledSchema {
     form = { form: "discriminator", tag: schema.discriminator.tag, mapping };
   }
 
-  return { form };
+  return { definitions, form };
 }
 
 function checkRefs(root: CompiledSchema, schema: CompiledSchema): void {

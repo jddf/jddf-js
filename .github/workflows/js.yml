@@ -14,5 +14,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "10.x"
+      - run: yarn
       - run: yarn test
       - run: yarn lint

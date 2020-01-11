@@ -1,4 +1,4 @@
-# jddf.js [![npm](https://img.shields.io/npm/v/@jddf/jddf.svg)](https://www.npmjs.com/package/@jddf/jddf)
+# jddf.js [![][npm-badge]][npm-url] [![][ci-badge]][ci-url]
 
 This package is a JavaScript implementation of **JSON Data Definition Format**.
 You can use it to:
@@ -8,6 +8,11 @@ You can use it to:
 3. Build your own custom tooling on top of JSON Data Definition Format.
 
 This package is written in TypeScript, and works in browsers and Node.js alike.
+
+[npm-badge]: https://img.shields.io/npm/v/@jddf/jddf.svg
+[ci-badge]: https://github.com/jddf/jddf-js/workflows/JavaScript%20CI/badge.svg?branch=master
+[npm-url]: https://www.npmjs.com/package/@jddf/jddf
+[ci-url]: https://github.com/jddf/jddf-js/actions
 
 ## Installation
 

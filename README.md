@@ -1,4 +1,4 @@
-# jddf.js [![npm](https://img.shields.io/npm/v/@jddf/jddf.svg)](https://www.npmjs.com/package/@jddf/jddf)
+# jddf.js [![][npm-badge]][npm-url] [![][ci-badge]][ci-url]
 
 This package is a JavaScript implementation of **JSON Data Definition Format**.
 You can use it to:
@@ -9,6 +9,25 @@ You can use it to:
 
 This package is written in TypeScript, and works in browsers and Node.js alike.
 
+[npm-badge]: https://img.shields.io/npm/v/@jddf/jddf.svg
+[ci-badge]: https://github.com/jddf/jddf-js/workflows/JavaScript%20CI/badge.svg?branch=master
+[npm-url]: https://www.npmjs.com/package/@jddf/jddf
+[ci-url]: https://github.com/jddf/jddf-js/actions
+
+## Installation
+
+To install this package using `npm`, run:
+
+```bash
+npm install @jddf/jddf
+```
+
+To install using `yarn`, run:
+
+```bash
+yarn add @jddf/jddf
+```
+
 ## Usage
 
 Here's how you can use this package to validate inputted data:
@@ -16,8 +35,8 @@ Here's how you can use this package to validate inputted data:
 ```typescript
 import { compileSchema, Validator } from "@jddf/jddf";
 
-// compileSchema does basic validation on your schema, to make sure it's sane.
-// Plus, if you're using TypeScript, it will give you basic typechecking.
+// compileSchema does basic validation on your schema, to make sure it is a
+// valid schema. If you're using TypeScript, it will give you typechecking.
 const schema = compileSchema({
   properties: {
     name: { type: "string" },

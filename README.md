@@ -9,6 +9,20 @@ You can use it to:
 
 This package is written in TypeScript, and works in browsers and Node.js alike.
 
+## Installation
+
+To install this package using `npm`, run:
+
+```bash
+npm install @jddf/jddf
+```
+
+To install using `yarn`, run:
+
+```bash
+yarn add @jddf/jddf
+```
+
 ## Usage
 
 Here's how you can use this package to validate inputted data:

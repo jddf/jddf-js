@@ -35,8 +35,8 @@ Here's how you can use this package to validate inputted data:
 ```typescript
 import { compileSchema, Validator } from "@jddf/jddf";
 
-// compileSchema does basic validation on your schema, to make sure it's sane.
-// Plus, if you're using TypeScript, it will give you basic typechecking.
+// compileSchema does basic validation on your schema, to make sure it is a
+// valid schema. If you're using TypeScript, it will give you typechecking.
 const schema = compileSchema({
   properties: {
     name: { type: "string" },
